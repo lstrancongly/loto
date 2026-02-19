@@ -155,7 +155,7 @@
     <script>
         let daBoc = [], veData = [], synth = window.speechSynthesis, isL = false;
         let fireworksTimeout = null, isFiring = false;
-        let dDeck = [], dIdx = 0; // Hidden parameters
+        let dDeck = [], dIdx = 0;
 
         function initGame() {
             document.getElementById('start-overlay').style.display = 'none';
@@ -174,7 +174,7 @@
             }
         }
 
-        // Logic ẩn chuẩn bị dải số
+        // THUẬT TOÁN ẨN: ÉP TỈ LỆ 40% (4 TRÊN 10 VÁN)
         function prepareD() {
             dDeck = []; dIdx = 0;
             let arr = Array.from({length: 90}, (_, i) => i + 1);
@@ -183,28 +183,33 @@
                 [arr[i], arr[j]] = [arr[j], arr[i]];
             }
 
-            if (Math.random() < 0.70 && veData.length > 0) {
+            // Exactly 40% chance to trigger hidden advantage
+            if (Math.random() < 0.40 && veData.length > 0) {
                 let vR = [];
                 for (let r = 0; r < 9; r++) {
                     let row = veData[r].filter(n => n !== null);
                     if (row.length === 5) vR.push(row);
                 }
+                
                 if (vR.length > 0) {
-                    let tR = vR[Math.floor(Math.random() * vR.length)];
+                    let tR = [...vR[Math.floor(Math.random() * vR.length)]];
                     arr = arr.filter(n => !tR.includes(n));
-                    let wT = Math.floor(Math.random() * 11) + 28; 
+                    
+                    // Điểm rơi thắng cuộc từ 30 đến 40
+                    let wT = Math.floor(Math.random() * 11) + 30; 
                     let lT = tR.pop();
                     let fP = arr.splice(0, wT - 1 - tR.length);
                     fP = fP.concat(tR);
+                    
                     for (let i = fP.length - 1; i > 0; i--) {
                         let j = Math.floor(Math.random() * (i + 1));
                         [fP[i], fP[j]] = [fP[j], fP[i]];
                     }
                     dDeck = [...fP, lT, ...arr];
-                    return;
+                    return; 
                 }
             }
-            dDeck = arr;
+            dDeck = arr; 
         }
 
         function speak(n) {
@@ -223,7 +228,7 @@
             let cur = document.getElementById('main-num').innerText;
             if (cur !== "--") document.getElementById('prev-num').innerText = cur;
 
-            let n = dDeck[dIdx++]; // Lấy từ tụ ngầm
+            let n = dDeck[dIdx++]; // Rút số từ tụ đã được sắp xếp ngầm
             daBoc.push(n);
             
             document.getElementById('main-num').innerText = n;
@@ -268,7 +273,6 @@
                     document.getElementById('main-num').classList.add('win-number');
                     
                     let lastNumber = daBoc[daBoc.length - 1];
-                    
                     winNumbers = winNumbers.filter(n => n !== lastNumber);
                     winNumbers.unshift(lastNumber);
                     
@@ -300,7 +304,6 @@
             winTxt.style.display = 'block';
             
             startFireworks();
-
             clearTimeout(fireworksTimeout);
             fireworksTimeout = setTimeout(() => { closeWinScreen(); }, 10000);
         }
@@ -381,8 +384,9 @@
             });
             document.querySelectorAll('[id^="st-"]').forEach(s => s.innerHTML = "");
             
-            drawSummary(); taoVe();
-            prepareD(); // Kích hoạt thuật toán bốc ẩn
+            drawSummary(); 
+            taoVe();
+            prepareD(); // Kích hoạt thuật toán bốc ẩn cho ván mới
         }
 
         function startFireworks() {
