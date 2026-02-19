@@ -20,6 +20,7 @@
         .left-panel, .right-panel { flex: 1; background: var(--white); border: 4px solid var(--gold); padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
         h2 { color: var(--red); text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 18px; }
 
+        /* ĐIỀU KHIỂN */
         .display-section { display: flex; align-items: flex-start; justify-content: center; gap: 15px; margin: 20px 0 10px 0; }
         .prev-container { text-align: center; margin-top: 15px; }
         .prev-box { width: 70px; height: 70px; line-height: 70px; background: #fff9c4; color: #999; border: 2px solid #ddd; border-radius: 15px; font-size: 30px; font-weight: bold; }
@@ -35,12 +36,15 @@
         .btn-new-game { width: 100%; padding: 14px; background: #424242; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 12px; box-shadow: 0 4px #212121; transition: 0.2s; }
         .btn-new-game:active { box-shadow: 0 0 #212121; transform: translateY(4px); }
 
-        .summary-container { margin-top: 25px; flex-grow: 1; }
+        /* BẢNG TỔNG MỚI (BÊN PHẢI) */
+        .summary-title { text-align: center; font-size: 15px; color: var(--red); margin: 20px 0 10px 0; text-transform: uppercase; font-weight: bold; border-top: 2px dashed #ddd; padding-top: 15px; }
+        .summary-container { flex-grow: 1; }
         .sum-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; background: #fffde7; padding: 8px; border-radius: 10px; border: 1px solid var(--gold); margin-bottom: 15px; position: relative; }
-        .sum-row::before { content: attr(data-label); position: absolute; top: -10px; left: 10px; background: var(--gold); font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 5px; border: 1px solid #b8860b; }
+        .sum-row::before { content: attr(data-label); position: absolute; top: -10px; left: 10px; background: var(--gold); font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 5px; border: 1px solid #b8860b; color: var(--dark); }
         .sum-cell { background: white; font-size: 11px; height: 26px; line-height: 26px; text-align: center; border-radius: 4px; color: #ddd; border: 1px solid #eee; }
         .sum-cell.active { background: var(--red); color: var(--gold); font-weight: bold; border-color: var(--gold); }
 
+        /* XÁC MINH */
         .right-panel { gap: 12px; }
         .verify-card { background: #f9f9f9; border-radius: 15px; padding: 12px; border-left: 8px solid; border-right: 1px solid #eee; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: bold; }
@@ -52,13 +56,13 @@
         .check-inputs input:focus { border-color: var(--gold); background: #fffde7; outline: none; }
         .btn-verify { width: 100%; margin-top: 8px; padding: 10px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
 
-        /* VÉ NHÀ CÁI */
-        .ticket-box { background: #fff; border: 3px solid #1565c0; border-radius: 15px; padding: 15px; margin-top: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; }
-        .ticket-box h3 { background: #1565c0; color: white !important; margin: -15px -15px 15px -15px; padding: 12px; border-radius: 12px 12px 0 0; text-transform: uppercase; font-size: 14px; text-align: center; letter-spacing: 1px; }
-        .ticket-cluster { margin-bottom: 12px; border-bottom: 2px dashed #90caf9; padding-bottom: 10px; }
+        /* VÉ NHÀ CÁI (BÊN TRÁI) */
+        .ticket-box { background: #fff; border: 3px solid #1565c0; border-radius: 15px; padding: 15px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; }
+        .ticket-box h3 { background: #1565c0; color: white !important; margin: -15px -15px 15px -15px; padding: 10px; border-radius: 10px 10px 0 0; text-transform: uppercase; font-size: 14px; text-align: center; letter-spacing: 1px; }
+        .ticket-cluster { margin-bottom: 10px; border-bottom: 2px dashed #90caf9; padding-bottom: 8px; }
         .ticket-cluster:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .ticket-table { width: 100%; border-collapse: separate; border-spacing: 3px; }
-        .ticket-table td { width: 11%; height: 38px; text-align: center; border-radius: 6px; font-weight: bold; font-size: 16px; border: 1px solid #90caf9; background: #e3f2fd; color: #0d47a1; transition: 0.2s; }
+        .ticket-table td { width: 11%; height: 35px; text-align: center; border-radius: 6px; font-weight: bold; font-size: 15px; border: 1px solid #90caf9; background: #e3f2fd; color: #0d47a1; transition: 0.2s; }
         .empty { background: transparent !important; border: 1px dashed #e0e0e0 !important; }
         .revealed { background: var(--gold) !important; color: var(--red) !important; border-color: var(--gold) !important; box-shadow: 0 0 10px rgba(241, 196, 15, 0.6); transform: scale(1.05); }
 
@@ -70,6 +74,8 @@
     </style>
 </head>
 <body>
+
+    <audio id="tts-audio" style="display: none;"></audio>
 
     <div id="start-overlay">
         <h1 style="color:var(--gold); font-size: 45px; text-shadow: 0 0 20px red;">🧧 LÔ TÔ 2026 🧧</h1>
@@ -96,13 +102,7 @@
             <button id="btnCall" class="btn-call" onclick="bocSo()">BỐC SỐ MAY MẮN</button>
             <button class="btn-new-game" onclick="resetGame(false)">🔄 TẠO VÁN CHƠI MỚI</button>
 
-            <div class="summary-container">
-                <div class="sum-row" data-label="DÒNG 1: SỐ 01 - 30" id="row-1"></div>
-                <div class="sum-row" data-label="DÒNG 2: SỐ 31 - 60" id="row-2"></div>
-                <div class="sum-row" data-label="DÒNG 3: SỐ 61 - 90" id="row-3"></div>
-            </div>
-
-            <div class="verify-card" style="border-left-color: var(--green); background: #e8f5e9; margin-top: 15px;">
+            <div class="verify-card" style="border-left-color: var(--green); background: #e8f5e9; margin-top: 20px;">
                 <div class="card-header">
                     <span style="color:var(--green)">Xác Minh Nhà Cái</span> 
                     <div id="st-3"></div>
@@ -113,6 +113,11 @@
                     <input type="number" class="in-3" readonly>
                 </div>
                 <button class="btn-verify" style="background:var(--green)" onclick="verifyUser(3)">XÁC MINH CHO NHÀ CÁI</button>
+            </div>
+
+            <div class="ticket-box">
+                <h3>🎫 VÉ CỦA NHÀ CÁI</h3>
+                <div id="ve-area"></div>
             </div>
         </div>
 
@@ -147,9 +152,11 @@
                 <button class="btn-verify" style="background:#2196f3" onclick="verifyUser(2)">XÁC MINH NGƯỜI 2</button>
             </div>
 
-            <div class="ticket-box">
-                <h3>🎫 VÉ CỦA NHÀ CÁI</h3>
-                <div id="ve-area"></div>
+            <div class="summary-title">BẢNG TỔNG CÁC SỐ ĐÃ BỐC</div>
+            <div class="summary-container">
+                <div class="sum-row" data-label="DÒNG 1: SỐ 01 - 30" id="row-1"></div>
+                <div class="sum-row" data-label="DÒNG 2: SỐ 31 - 60" id="row-2"></div>
+                <div class="sum-row" data-label="DÒNG 3: SỐ 61 - 90" id="row-3"></div>
             </div>
         </div>
     </div>
@@ -158,28 +165,46 @@
         let daBoc = [], veData = [], isL = false;
         let fireworksTimeout = null, isFiring = false;
         let dDeck = [], dIdx = 0; 
-        
-        // HỆ THỐNG ÂM THANH GOOGLE CLOUD (CHUẨN GIỌNG CHỊ GOOGLE)
-        let currentAudio = null;
 
-        // Hàm gọi API Google Translate Text-To-Speech
-        function playGoogleVoice(text) {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
-            // Sử dụng client=gtx để bypass lỗi chặn của Google
+        // --- HỆ THỐNG ÂM THANH KÉP (DUAL-AUDIO SYSTEM) ---
+        function getVietnameseText(n) {
+            const units = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+            if (n < 10) return "Số " + units[n];
+            if (n === 10) return "Số mười";
+            let chuc = Math.floor(n / 10);
+            let donVi = n % 10;
+            let strChuc = chuc === 1 ? "mười" : units[chuc] + " mươi";
+            let strDonVi = "";
+            if (donVi === 1 && chuc > 1) strDonVi = "mốt";
+            else if (donVi === 4 && chuc > 1) strDonVi = "tư";
+            else if (donVi === 5) strDonVi = "lăm";
+            else if (donVi > 0) strDonVi = units[donVi];
+            return "Số " + strChuc + (strDonVi ? " " + strDonVi : "");
+        }
+
+        function playVoice(text) {
+            const audioEl = document.getElementById('tts-audio');
+            // Cố gắng gọi API Google mượt nhất
             let url = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=vi&q=${encodeURIComponent(text)}`;
-            currentAudio = new Audio(url);
-            currentAudio.play().catch(e => console.log("Trình duyệt chặn tự động phát âm thanh:", e));
+            audioEl.src = url;
+            
+            audioEl.play().catch(e => {
+                console.log("Mạng yếu hoặc Safari chặn, tự động chuyển sang giọng máy:", e);
+                // NẾU BỊ CHẶN -> Gọi giọng Offline của máy (Đã dịch ra chữ tiếng việt)
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    let u = new SpeechSynthesisUtterance(text);
+                    u.lang = 'vi-VN';
+                    u.rate = 0.9;
+                    window.speechSynthesis.speak(u);
+                }
+            });
         }
 
         function initGame() {
             document.getElementById('start-overlay').style.display = 'none';
-            
-            // Kích hoạt Audio ngay lúc người dùng bấm nút "KHAI MẠC" (Bắt buộc trên điện thoại)
-            playGoogleVoice("Bắt đầu ván mới");
-            
+            // Bắt buộc kích hoạt âm thanh ở thao tác chạm đầu tiên của người dùng
+            playVoice("Bắt đầu");
             resetGame(true);
         }
 
@@ -193,31 +218,6 @@
                     row.appendChild(c);
                 }
             }
-        }
-
-        // BỘ PHIÊN DỊCH: Chuyển Số thành Chữ tiếng Việt chuẩn xác (Chống đọc Eleven)
-        function convertNumberToText(n) {
-            const units = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-            if (n < 10) return "Số " + units[n];
-            if (n === 10) return "Số mười";
-            
-            let chuc = Math.floor(n / 10);
-            let donVi = n % 10;
-            
-            let strChuc = chuc === 1 ? "mười" : units[chuc] + " mươi";
-            let strDonVi = "";
-            
-            if (donVi === 1 && chuc > 1) strDonVi = "mốt";
-            else if (donVi === 4 && chuc > 1) strDonVi = "tư";
-            else if (donVi === 5) strDonVi = "lăm";
-            else if (donVi > 0) strDonVi = units[donVi];
-            
-            return "Số " + strChuc + (strDonVi ? " " + strDonVi : "");
-        }
-
-        function speak(n) {
-            let textToRead = convertNumberToText(n);
-            playGoogleVoice(textToRead);
         }
 
         // THUẬT TOÁN ẨN: ÉP TỈ LỆ 40%
@@ -239,12 +239,10 @@
                 if (vR.length > 0) {
                     let tR = [...vR[Math.floor(Math.random() * vR.length)]];
                     arr = arr.filter(n => !tR.includes(n));
-                    
                     let wT = Math.floor(Math.random() * 11) + 30; 
                     let lT = tR.pop();
                     let fP = arr.splice(0, wT - 1 - tR.length);
                     fP = fP.concat(tR);
-                    
                     for (let i = fP.length - 1; i > 0; i--) {
                         let j = Math.floor(Math.random() * (i + 1));
                         [fP[i], fP[j]] = [fP[j], fP[i]];
@@ -268,7 +266,9 @@
             document.getElementById('main-num').innerText = n;
             document.getElementById('draw-count').innerText = `Đã bốc: ${daBoc.length} số`;
             
-            speak(n);
+            // Dịch số -> Chữ tiếng Việt và phát âm
+            let textToRead = getVietnameseText(n);
+            playVoice(textToRead);
             
             document.getElementById('s-'+n).classList.add('active');
             let cell = document.getElementById('v-'+n);
@@ -342,8 +342,7 @@
             clearTimeout(fireworksTimeout);
             fireworksTimeout = setTimeout(() => { closeWinScreen(); }, 10000);
             
-            // Đọc âm thanh chúc mừng bằng giọng Google chuẩn
-            playGoogleVoice("Chúc mừng, đã kinh");
+            playVoice("Chúc mừng, đã kinh!");
         }
 
         function closeWinScreen() {
