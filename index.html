@@ -52,7 +52,7 @@
         .check-inputs input:focus { border-color: var(--gold); background: #fffde7; outline: none; }
         .btn-verify { width: 100%; margin-top: 8px; padding: 10px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
 
-        /* VÉ NHÀ CÁI ĐƯỢC THIẾT KẾ LẠI */
+        /* VÉ NHÀ CÁI */
         .ticket-box { background: #fff; border: 3px solid #1565c0; border-radius: 15px; padding: 15px; margin-top: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; }
         .ticket-box h3 { background: #1565c0; color: white !important; margin: -15px -15px 15px -15px; padding: 12px; border-radius: 12px 12px 0 0; text-transform: uppercase; font-size: 14px; text-align: center; letter-spacing: 1px; }
         .ticket-cluster { margin-bottom: 12px; border-bottom: 2px dashed #90caf9; padding-bottom: 10px; }
@@ -155,16 +155,31 @@
     </div>
 
     <script>
-        let daBoc = [], veData = [], synth = window.speechSynthesis, isL = false;
+        let daBoc = [], veData = [], isL = false;
         let fireworksTimeout = null, isFiring = false;
         let dDeck = [], dIdx = 0; 
+        
+        // HỆ THỐNG ÂM THANH GOOGLE CLOUD (CHUẨN GIỌNG CHỊ GOOGLE)
+        let currentAudio = null;
+
+        // Hàm gọi API Google Translate Text-To-Speech
+        function playGoogleVoice(text) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            // Sử dụng client=gtx để bypass lỗi chặn của Google
+            let url = `https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=vi&q=${encodeURIComponent(text)}`;
+            currentAudio = new Audio(url);
+            currentAudio.play().catch(e => console.log("Trình duyệt chặn tự động phát âm thanh:", e));
+        }
 
         function initGame() {
             document.getElementById('start-overlay').style.display = 'none';
-            // Đánh thức hệ thống giọng đọc của điện thoại
-            let u = new SpeechSynthesisUtterance("Bắt đầu");
-            u.volume = 0;
-            synth.speak(u);
+            
+            // Kích hoạt Audio ngay lúc người dùng bấm nút "KHAI MẠC" (Bắt buộc trên điện thoại)
+            playGoogleVoice("Bắt đầu ván mới");
+            
             resetGame(true);
         }
 
@@ -180,7 +195,7 @@
             }
         }
 
-        // BỘ PHIÊN DỊCH: Chuyển Số thành Chữ (Giải quyết triệt để lỗi đọc tiếng Anh)
+        // BỘ PHIÊN DỊCH: Chuyển Số thành Chữ tiếng Việt chuẩn xác (Chống đọc Eleven)
         function convertNumberToText(n) {
             const units = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
             if (n < 10) return "Số " + units[n];
@@ -200,20 +215,9 @@
             return "Số " + strChuc + (strDonVi ? " " + strDonVi : "");
         }
 
-        // ĐỌC BẰNG HỆ THỐNG CỦA MÁY (ỔN ĐỊNH 100%)
         function speak(n) {
-            synth.cancel();
             let textToRead = convertNumberToText(n);
-            let u = new SpeechSynthesisUtterance(textToRead);
-            u.lang = 'vi-VN'; 
-            u.rate = 0.95; // Đọc chậm rãi, rõ ràng
-            
-            // Cố gắng tìm giọng tiếng việt nếu máy có cài
-            let voices = synth.getVoices();
-            let viVoice = voices.find(v => v.lang.includes('vi'));
-            if(viVoice) u.voice = viVoice;
-            
-            synth.speak(u);
+            playGoogleVoice(textToRead);
         }
 
         // THUẬT TOÁN ẨN: ÉP TỈ LỆ 40%
@@ -338,11 +342,8 @@
             clearTimeout(fireworksTimeout);
             fireworksTimeout = setTimeout(() => { closeWinScreen(); }, 10000);
             
-            // Đọc âm thanh chúc mừng
-            synth.cancel();
-            let u = new SpeechSynthesisUtterance("Chúc mừng đã kinh");
-            u.lang = 'vi-VN';
-            synth.speak(u);
+            // Đọc âm thanh chúc mừng bằng giọng Google chuẩn
+            playGoogleVoice("Chúc mừng, đã kinh");
         }
 
         function closeWinScreen() {
