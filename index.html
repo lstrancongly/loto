@@ -52,13 +52,15 @@
         .check-inputs input:focus { border-color: var(--gold); background: #fffde7; outline: none; }
         .btn-verify { width: 100%; margin-top: 8px; padding: 10px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
 
-        .ticket-box { background: #e3f2fd; border: 2px dashed #1976d2; border-radius: 20px; padding: 15px; margin-top: auto; }
-        .ticket-cluster { margin-bottom: 10px; border-bottom: 2px dashed #1976d2; padding-bottom: 8px; }
+        /* VÉ NHÀ CÁI ĐƯỢC THIẾT KẾ LẠI */
+        .ticket-box { background: #fff; border: 3px solid #1565c0; border-radius: 15px; padding: 15px; margin-top: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; }
+        .ticket-box h3 { background: #1565c0; color: white !important; margin: -15px -15px 15px -15px; padding: 12px; border-radius: 12px 12px 0 0; text-transform: uppercase; font-size: 14px; text-align: center; letter-spacing: 1px; }
+        .ticket-cluster { margin-bottom: 12px; border-bottom: 2px dashed #90caf9; padding-bottom: 10px; }
         .ticket-cluster:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .ticket-table { width: 100%; border-collapse: separate; border-spacing: 2px; }
-        .ticket-table td { width: 11%; height: 38px; text-align: center; border-radius: 6px; font-weight: bold; font-size: 16px; border: 1px solid #bbdefb; background: #fff; }
-        .empty { background: transparent !important; border: none !important; }
-        .revealed { background: var(--gold) !important; color: var(--red) !important; box-shadow: inset 0 0 8px orange; transition: 0.3s; }
+        .ticket-table { width: 100%; border-collapse: separate; border-spacing: 3px; }
+        .ticket-table td { width: 11%; height: 38px; text-align: center; border-radius: 6px; font-weight: bold; font-size: 16px; border: 1px solid #90caf9; background: #e3f2fd; color: #0d47a1; transition: 0.2s; }
+        .empty { background: transparent !important; border: 1px dashed #e0e0e0 !important; }
+        .revealed { background: var(--gold) !important; color: var(--red) !important; border-color: var(--gold) !important; box-shadow: 0 0 10px rgba(241, 196, 15, 0.6); transform: scale(1.05); }
 
         #start-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; display: none; background: rgba(0,0,0,0.7); }
@@ -146,27 +148,23 @@
             </div>
 
             <div class="ticket-box">
-                <h3 style="margin:0 0 10px 0; font-size:14px; color:#1565c0; text-align:center;">🎫 VÉ CỦA NHÀ CÁI</h3>
+                <h3>🎫 VÉ CỦA NHÀ CÁI</h3>
                 <div id="ve-area"></div>
             </div>
         </div>
     </div>
 
     <script>
-        let daBoc = [], veData = [], isL = false;
+        let daBoc = [], veData = [], synth = window.speechSynthesis, isL = false;
         let fireworksTimeout = null, isFiring = false;
         let dDeck = [], dIdx = 0; 
-        let currentAudio = null;
 
         function initGame() {
             document.getElementById('start-overlay').style.display = 'none';
-            if (currentAudio) currentAudio.pause();
-            
-            // Khởi động Audio để máy cho phép phát tiếng
-            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent("Bắt đầu ván mới")}`;
-            currentAudio = new Audio(url);
-            currentAudio.play().catch(e => console.log(e));
-            
+            // Đánh thức hệ thống giọng đọc của điện thoại
+            let u = new SpeechSynthesisUtterance("Bắt đầu");
+            u.volume = 0;
+            synth.speak(u);
             resetGame(true);
         }
 
@@ -182,7 +180,7 @@
             }
         }
 
-        // BỘ PHIÊN DỊCH: Chuyển Số thành Chữ tiếng Việt chuẩn xác
+        // BỘ PHIÊN DỊCH: Chuyển Số thành Chữ (Giải quyết triệt để lỗi đọc tiếng Anh)
         function convertNumberToText(n) {
             const units = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
             if (n < 10) return "Số " + units[n];
@@ -202,22 +200,23 @@
             return "Số " + strChuc + (strDonVi ? " " + strDonVi : "");
         }
 
-        // ĐỌC BẰNG GOOGLE CLOUD TTS
+        // ĐỌC BẰNG HỆ THỐNG CỦA MÁY (ỔN ĐỊNH 100%)
         function speak(n) {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
-            
-            // Dịch số thành chữ trước khi gửi cho Google (Vd: "Số mười một")
+            synth.cancel();
             let textToRead = convertNumberToText(n);
-            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(textToRead)}`;
+            let u = new SpeechSynthesisUtterance(textToRead);
+            u.lang = 'vi-VN'; 
+            u.rate = 0.95; // Đọc chậm rãi, rõ ràng
             
-            currentAudio = new Audio(url);
-            currentAudio.play().catch(e => console.log("Không thể phát âm thanh:", e));
+            // Cố gắng tìm giọng tiếng việt nếu máy có cài
+            let voices = synth.getVoices();
+            let viVoice = voices.find(v => v.lang.includes('vi'));
+            if(viVoice) u.voice = viVoice;
+            
+            synth.speak(u);
         }
 
-        // THUẬT TOÁN ẨN: ÉP TỈ LỆ 40% (4 TRÊN 10 VÁN) - CHẮC CHẮN KINH TỪ 30-40
+        // THUẬT TOÁN ẨN: ÉP TỈ LỆ 40%
         function prepareD() {
             dDeck = []; dIdx = 0;
             let arr = Array.from({length: 90}, (_, i) => i + 1);
@@ -339,10 +338,11 @@
             clearTimeout(fireworksTimeout);
             fireworksTimeout = setTimeout(() => { closeWinScreen(); }, 10000);
             
-            if (currentAudio) currentAudio.pause();
-            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent("Chúc mừng, đã kinh")}`;
-            currentAudio = new Audio(url);
-            currentAudio.play().catch(e => console.log(e));
+            // Đọc âm thanh chúc mừng
+            synth.cancel();
+            let u = new SpeechSynthesisUtterance("Chúc mừng đã kinh");
+            u.lang = 'vi-VN';
+            synth.speak(u);
         }
 
         function closeWinScreen() {
