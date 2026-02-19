@@ -156,17 +156,16 @@
         let daBoc = [], veData = [], isL = false;
         let fireworksTimeout = null, isFiring = false;
         let dDeck = [], dIdx = 0; 
-        
-        // HỆ THỐNG ÂM THANH MỚI (CLOUD TTS)
         let currentAudio = null;
 
         function initGame() {
             document.getElementById('start-overlay').style.display = 'none';
-            
-            // Kích hoạt Audio Engine trên iPhone/Android bằng 1 câu chào ngầm
             if (currentAudio) currentAudio.pause();
-            currentAudio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=Bắt+đầu+ván+mới");
-            currentAudio.play().catch(e => console.log("Audio khởi tạo:", e));
+            
+            // Khởi động Audio để máy cho phép phát tiếng
+            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent("Bắt đầu ván mới")}`;
+            currentAudio = new Audio(url);
+            currentAudio.play().catch(e => console.log(e));
             
             resetGame(true);
         }
@@ -181,6 +180,41 @@
                     row.appendChild(c);
                 }
             }
+        }
+
+        // BỘ PHIÊN DỊCH: Chuyển Số thành Chữ tiếng Việt chuẩn xác
+        function convertNumberToText(n) {
+            const units = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+            if (n < 10) return "Số " + units[n];
+            if (n === 10) return "Số mười";
+            
+            let chuc = Math.floor(n / 10);
+            let donVi = n % 10;
+            
+            let strChuc = chuc === 1 ? "mười" : units[chuc] + " mươi";
+            let strDonVi = "";
+            
+            if (donVi === 1 && chuc > 1) strDonVi = "mốt";
+            else if (donVi === 4 && chuc > 1) strDonVi = "tư";
+            else if (donVi === 5) strDonVi = "lăm";
+            else if (donVi > 0) strDonVi = units[donVi];
+            
+            return "Số " + strChuc + (strDonVi ? " " + strDonVi : "");
+        }
+
+        // ĐỌC BẰNG GOOGLE CLOUD TTS
+        function speak(n) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            
+            // Dịch số thành chữ trước khi gửi cho Google (Vd: "Số mười một")
+            let textToRead = convertNumberToText(n);
+            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(textToRead)}`;
+            
+            currentAudio = new Audio(url);
+            currentAudio.play().catch(e => console.log("Không thể phát âm thanh:", e));
         }
 
         // THUẬT TOÁN ẨN: ÉP TỈ LỆ 40% (4 TRÊN 10 VÁN) - CHẮC CHẮN KINH TỪ 30-40
@@ -219,18 +253,6 @@
             dDeck = arr; 
         }
 
-        // HÀM ĐỌC SỐ BẰNG GOOGLE CLOUD TTS (KHÔNG PHỤ THUỘC MÁY)
-        function speak(n) {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.currentTime = 0;
-            }
-            // Gọi trực tiếp API Đám mây của Google
-            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=Số+${n}`;
-            currentAudio = new Audio(url);
-            currentAudio.play().catch(e => console.log("Không thể phát âm thanh:", e));
-        }
-
         function bocSo() {
             if (isL || daBoc.length >= 90 || dIdx >= 90) return; 
             
@@ -243,7 +265,7 @@
             document.getElementById('main-num').innerText = n;
             document.getElementById('draw-count').innerText = `Đã bốc: ${daBoc.length} số`;
             
-            speak(n); // Kích hoạt giọng đọc siêu chuẩn
+            speak(n);
             
             document.getElementById('s-'+n).classList.add('active');
             let cell = document.getElementById('v-'+n);
@@ -317,9 +339,9 @@
             clearTimeout(fireworksTimeout);
             fireworksTimeout = setTimeout(() => { closeWinScreen(); }, 10000);
             
-            // Đọc âm thanh chúc mừng
             if (currentAudio) currentAudio.pause();
-            currentAudio = new Audio("https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=Chúc+mừng+đã+kinh");
+            let url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent("Chúc mừng, đã kinh")}`;
+            currentAudio = new Audio(url);
             currentAudio.play().catch(e => console.log(e));
         }
 
