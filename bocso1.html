@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lô Tô Tết">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#7d0000">
+    
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧧</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧧</text></svg>">
+
+    <title>LÔ TÔ TẾT 2026</title>
+    <style>
+        :root { --red: #d32f2f; --gold: #f1c40f; --dark: #1a1a1a; --white: #ffffff; --green: #2e7d32; --bg: #7d0000; }
+        /* Thêm padding-top để tránh tai thỏ (notch) trên iPhone */
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: env(safe-area-inset-top) 10px 10px 10px; color: var(--dark); overflow-x: hidden; }
+        
+        .main-layout { display: flex; flex-direction: row; gap: 20px; max-width: 1200px; margin: auto; align-items: stretch; }
+
+        .left-panel, .right-panel { flex: 1; background: var(--white); border: 4px solid var(--gold); padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
+        h2 { color: var(--red); text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 18px; }
+
+        .display-section { display: flex; align-items: flex-start; justify-content: center; gap: 15px; margin: 20px 0 10px 0; }
+        .prev-container { text-align: center; margin-top: 15px; }
+        .prev-box { width: 70px; height: 70px; line-height: 70px; background: #fff9c4; color: #999; border: 2px solid #ddd; border-radius: 15px; font-size: 30px; font-weight: bold; }
+
+        .main-container { flex: 1; }
+        .main-box { width: 100%; height: 120px; line-height: 120px; background: var(--dark); color: var(--gold); border: 4px solid var(--gold); border-radius: 20px; font-size: 85px; font-weight: bold; text-align: center; text-shadow: 0 0 15px var(--gold); box-sizing: border-box; transition: 0.3s; }
+        .win-number { background: var(--green) !important; color: var(--white) !important; border-color: #a5d6a7 !important; text-shadow: 0 0 20px #00ff00 !important; }
+        .draw-counter { text-align: center; margin-top: 8px; font-weight: bold; color: var(--red); font-size: 16px; background: #ffebee; padding: 5px; border-radius: 10px; border: 1px dashed var(--red); }
+
+        .btn-call { width: 100%; padding: 18px; background: linear-gradient(to bottom, #ff5252, #d32f2f); color: white; border: none; border-radius: 15px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 6px #8e0000; transition: 0.2s; margin-top: 10px; }
+        .btn-call:active { box-shadow: 0 0 #8e0000; transform: translateY(4px); }
+        .btn-call:disabled { background: #999 !important; box-shadow: none; cursor: not-allowed; color: #eee !important; }
+        .btn-new-game { width: 100%; padding: 14px; background: #424242; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 12px; box-shadow: 0 4px #212121; transition: 0.2s; }
+        .btn-new-game:active { box-shadow: 0 0 #212121; transform: translateY(4px); }
+
+        .summary-container { margin-top: 25px; flex-grow: 1; }
+        .sum-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; background: #fffde7; padding: 8px; border-radius: 10px; border: 1px solid var(--gold); margin-bottom: 15px; position: relative; }
+        .sum-row::before { content: attr(data-label); position: absolute; top: -10px; left: 10px; background: var(--gold); font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 5px; border: 1px solid #b8860b; }
+        .sum-cell { background: white; font-size: 11px; height: 26px; line-height: 26px; text-align: center; border-radius: 4px; color: #ddd; border: 1px solid #eee; }
+        .sum-cell.active { background: var(--red); color: var(--gold); font-weight: bold; border-color: var(--gold); }
+
+        .right-panel { gap: 12px; }
+        .verify-card { background: #f9f9f9; border-radius: 15px; padding: 12px; border-left: 8px solid; border-right: 1px solid #eee; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: bold; }
+        .btn-bao-kinh { background: var(--red); color: var(--gold); border: 1px solid var(--gold); border-radius: 6px; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px #b71c1c; }
+        .btn-bao-kinh:active { transform: translateY(2px); box-shadow: none; }
+
+        .check-inputs { display: flex; justify-content: space-between; gap: 4px; }
+        .check-inputs input { width: 18%; padding: 10px; text-align: center; border-radius: 10px; border: 2px solid #ddd; font-weight: bold; font-size: 18px; transition: 0.3s; color: var(--dark); }
+        .check-inputs input:focus { border-color: var(--gold); background: #fffde7; outline: none; }
+        .btn-verify { width: 100%; margin-top: 8px; padding: 10px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
+
+        .ticket-box { background: #e3f2fd; border: 2px dashed #1976d2; border-radius: 20px; padding: 15px; margin-top: auto; }
+        .ticket-cluster { margin-bottom: 10px; border-bottom: 2px dashed #1976d2; padding-bottom: 8px; }
+        .ticket-cluster:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .ticket-table { width: 100%; border-collapse: separate; border-spacing: 2px; }
+        .ticket-table td { width: 11%; height: 38px; text-align: center; border-radius: 6px; font-weight: bold; font-size: 16px; border: 1px solid #bbdefb; background: #fff; }
+        .empty { background: transparent !important; border: none !important; }
+        .revealed { background: var(--gold) !important; color: var(--red) !important; box-shadow: inset 0 0 8px orange; transition: 0.3s; }
+
+        #start-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; display: none; background: rgba(0,0,0,0.7); }
+        #win-txt { position: fixed; top: 35%; left: 0; width: 100%; text-align: center; color: yellow; font-size: 45px; font-weight: 900; text-shadow: 0 0 20px red; z-index: 1001; display: none; }
+
+        @media (max-width: 768px) {
+            .main-layout { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-overlay">
+        <h1 style="color:var(--gold); font-size: 45px; text-shadow: 0 0 20px red;">🧧 LÔ TÔ 2026 🧧</h1>
+        <button onclick="initGame()" style="background:var(--gold); color:var(--red); padding: 25px 60px; font-size: 26px; border-radius: 60px; border:none; font-weight:bold; cursor:pointer; box-shadow: 0 0 30px var(--gold);">KHAI MẠC VÁN CHƠI</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+    <div id="win-txt"></div>
+
+    <div class="main-layout">
+        <div class="left-panel">
+            <h2>📢 TRẠM ĐIỀU KHIỂN</h2>
+            <div class="display-section">
+                <div class="prev-container">
+                    <div style="font-size:10px; font-weight:bold; color: #999;">TRƯỚC</div>
+                    <div id="prev-num" class="prev-box">--</div>
+                </div>
+                <div class="main-container">
+                    <div id="main-num" class="main-box">--</div>
+                    <div id="draw-count" class="draw-counter">Đã bốc: 0 số</div>
+                </div>
+            </div>
+            
+            <button id="btnCall" class="btn-call" onclick="bocSo()">BỐC SỐ MAY MẮN</button>
+            <button class="btn-new-game" onclick="resetGame()">🔄 TẠO VÁN CHƠI MỚI</button>
+
+            <div class="summary-container">
+                <div class="sum-row" data-label="DÒNG 1: SỐ 01 - 30" id="row-1"></div>
+                <div class="sum-row" data-label="DÒNG 2: SỐ 31 - 60" id="row-2"></div>
+                <div class="sum-row" data-label="DÒNG 3: SỐ 61 - 90" id="row-3"></div>
+            </div>
+
+            <div class="verify-card" style="border-left-color: var(--green); background: #e8f5e9; margin-top: 15px;">
+                <div class="card-header">
+                    <span style="color:var(--green)">Xác Minh Nhà Cái</span> 
+                    <div id="st-3"></div>
+                </div>
+                <div class="check-inputs">
+                    <input type="number" class="in-3" readonly> <input type="number" class="in-3" readonly>
+                    <input type="number" class="in-3" readonly> <input type="number" class="in-3" readonly>
+                    <input type="number" class="in-3" readonly>
+                </div>
+                <button class="btn-verify" style="background:var(--green)" onclick="verifyUser(3)">XÁC MINH CHO NHÀ CÁI</button>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <h2>✅ TRUNG TÂM KIỂM ĐỊNH</h2>
+            
+            <div class="verify-card" style="border-left-color: #ff5722;">
+                <div class="card-header">
+                    <span style="color:#ff5722">Xác Minh Người 1</span> 
+                    <button class="btn-bao-kinh" onclick="baoKinh(1)">🚨 BÁO KINH</button>
+                    <div id="st-1"></div>
+                </div>
+                <div class="check-inputs">
+                    <input type="number" class="in-1"> <input type="number" class="in-1">
+                    <input type="number" class="in-1"> <input type="number" class="in-1">
+                    <input type="number" class="in-1">
+                </div>
+                <button class="btn-verify" style="background:#ff5722" onclick="verifyUser(1)">XÁC MINH NGƯỜI 1</button>
+            </div>
+
+            <div class="verify-card" style="border-left-color: #2196f3;">
+                <div class="card-header">
+                    <span style="color:#2196f3">Xác Minh Người 2</span> 
+                    <button class="btn-bao-kinh" onclick="baoKinh(2)">🚨 BÁO KINH</button>
+                    <div id="st-2"></div>
+                </div>
+                <div class="check-inputs">
+                    <input type="number" class="in-2"> <input type="number" class="in-2">
+                    <input type="number" class="in-2"> <input type="number" class="in-2">
+                    <input type="number" class="in-2">
+                </div>
+                <button class="btn-verify" style="background:#2196f3" onclick="verifyUser(2)">XÁC MINH NGƯỜI 2</button>
+            </div>
+
+            <div class="ticket-box">
+                <h3 style="margin:0 0 10px 0; font-size:14px; color:#1565c0; text-align:center;">🎫 VÉ CỦA NHÀ CÁI</h3>
+                <div id="ve-area"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let daBoc = [], veData = [], synth = window.speechSynthesis, isL = false;
+        let fireworksTimeout = null;
+        let isFiring = false;
+
+        function initGame() {
+            document.getElementById('start-overlay').style.display = 'none';
+            synth.cancel(); resetGame(true);
+        }
+
+        function drawSummary() {
+            for(let r=1; r<=3; r++){
+                let row = document.getElementById('row-'+r); row.innerHTML = '';
+                let start = (r-1)*30 + 1;
+                for(let i=start; i<start+30; i++){
+                    let c = document.createElement('div');
+                    c.className = 'sum-cell'; c.id = 's-'+i; c.innerText = i;
+                    row.appendChild(c);
+                }
+            }
+        }
+
+        function speak(n) {
+            synth.cancel();
+            let u = new SpeechSynthesisUtterance("Số " + n);
+            u.lang = 'vi-VN'; u.pitch = 1.3;
+            let vs = synth.getVoices();
+            let f = vs.find(v => v.lang.includes('vi') && (v.name.includes('Google') || v.name.includes('Female')));
+            if(f) u.voice = f;
+            synth.speak(u);
+        }
+
+        function bocSo() {
+            if (isL || daBoc.length >= 90) return; 
+            
+            let cur = document.getElementById('main-num').innerText;
+            if (cur !== "--") document.getElementById('prev-num').innerText = cur;
+
+            let n;
+            do { n = Math.floor(Math.random() * 90) + 1; } while (daBoc.includes(n));
+            daBoc.push(n);
+            
+            document.getElementById('main-num').innerText = n;
+            document.getElementById('draw-count').innerText = `Đã bốc: ${daBoc.length} số`;
+            speak(n);
+            
+            document.getElementById('s-'+n).classList.add('active');
+            let cell = document.getElementById('v-'+n);
+            if (cell) cell.classList.add('revealed');
+            
+            chkAutoLock();
+        }
+
+        function baoKinh(uId) {
+            if (daBoc.length === 0) { alert("Chưa bốc số nào!"); return; }
+            
+            isL = true;
+            document.getElementById('btnCall').disabled = true;
+            let lastNumber = daBoc[daBoc.length - 1];
+            
+            let inputs = document.querySelectorAll('.in-' + uId);
+            inputs[0].value = lastNumber;
+            inputs[0].style.borderColor = "var(--red)"; 
+            inputs[0].style.background = "#fffde7"; 
+            inputs[0].style.color = "var(--red)"; 
+            
+            inputs[1].focus();
+        }
+
+        function chkAutoLock() {
+            for (let r = 0; r < 9; r++) {
+                let winNumbers = [];
+                for (let c = 0; c < 9; c++) {
+                    if (veData[r][c] && daBoc.includes(veData[r][c])) {
+                        winNumbers.push(veData[r][c]);
+                    }
+                }
+                
+                if (winNumbers.length === 5) {
+                    isL = true;
+                    document.getElementById('btnCall').disabled = true;
+                    document.getElementById('main-num').classList.add('win-number');
+                    
+                    let lastNumber = daBoc[daBoc.length - 1];
+                    
+                    winNumbers = winNumbers.filter(n => n !== lastNumber);
+                    winNumbers.unshift(lastNumber);
+                    
+                    let inputs = document.querySelectorAll('.in-3');
+                    for(let i = 0; i < 5; i++) {
+                        inputs[i].value = winNumbers[i];
+                        if (i === 0) {
+                            inputs[i].style.borderColor = "var(--red)";
+                            inputs[i].style.background = "#fffde7";
+                            inputs[i].style.color = "var(--red)";
+                        } else {
+                            inputs[i].style.borderColor = "var(--gold)";
+                        }
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function triggerWin(message) {
+            isL = true;
+            document.getElementById('btnCall').disabled = true;
+            
+            let winTxt = document.getElementById('win-txt');
+            winTxt.innerHTML = message + `
+                <br><span style="font-size: 18px; color: white; text-shadow: none; display: block; margin-top: 15px;">(Tự động đóng pháo hoa sau 10s)</span>
+                <button onclick="closeWinScreen()" style="margin-top:20px; padding: 12px 40px; font-size: 20px; font-weight: bold; background: var(--gold); color: var(--red); border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 0 15px var(--gold); pointer-events: auto; text-transform: uppercase;">ĐÓNG PHÁO HOA NGAY</button>`;
+            winTxt.style.display = 'block';
+            
+            startFireworks();
+
+            clearTimeout(fireworksTimeout);
+            fireworksTimeout = setTimeout(() => { closeWinScreen(); }, 10000);
+        }
+
+        function closeWinScreen() {
+            clearTimeout(fireworksTimeout);
+            stopFireworks();
+            document.getElementById('win-txt').style.display = 'none';
+        }
+
+        function verifyUser(uId) {
+            let ins = document.querySelectorAll('.in-'+uId), ct = 0, total = 0;
+            ins.forEach(i => {
+                let v = parseInt(i.value);
+                if(v) { total++; if(daBoc.includes(v)) { i.style.background="#c8e6c9"; ct++; } else { i.style.background="#ffcdd2"; } }
+            });
+            let st = document.getElementById('st-'+uId);
+            if(total < 5) return alert("Vui lòng nhập đủ 5 số trên hàng ngang!");
+            
+            if(ct === 5) { 
+                st.innerHTML = "✅ HỢP LỆ!"; st.style.color = "var(--green)"; 
+                if (uId === 3) { triggerWin(`🎇 NHÀ CÁI ĐÃ KINH! 🧧`); } 
+                else { triggerWin(`🎇 NGƯỜI CHƠI ${uId} KINH! 🧧`); }
+            }
+            else { st.innerHTML = "❌ SAI SỐ!"; st.style.color = "red"; }
+        }
+
+        function taoVe() {
+            const vArea = document.getElementById('ve-area');
+            vArea.innerHTML = '';
+            veData = Array.from({ length: 9 }, () => Array(9).fill(null));
+            let ps = Array.from({length: 9}, (_, c) => {
+                let min = c * 10 || 1, max = (c === 8) ? 90 : (c * 10 + 9);
+                return Array.from({length: max-min+1}, (_, i) => min + i).sort(() => Math.random() - 0.5);
+            });
+            for (let r = 0; r < 9; r++) {
+                let cs = [0,1,2,3,4,5,6,7,8].sort(() => Math.random() - 0.5).slice(0, 5);
+                cs.forEach(c => { veData[r][c] = ps[c].pop(); });
+            }
+
+            for (let cluster = 0; cluster < 3; cluster++) {
+                let div = document.createElement('div');
+                div.className = 'ticket-cluster';
+                let html = '<table class="ticket-table">';
+                for (let r = cluster * 3; r < (cluster + 1) * 3; r++) {
+                    html += '<tr>';
+                    for (let c = 0; c < 9; c++) {
+                        let val = veData[r][c];
+                        if (val) html += `<td id="v-${val}">${val}</td>`;
+                        else html += `<td class="empty"></td>`;
+                    }
+                    html += '</tr>';
+                }
+                div.innerHTML = html + '</table>';
+                vArea.appendChild(div);
+            }
+        }
+
+        function resetGame(force = false) {
+            if (!force) {
+                if(!confirm("Bạn có chắc chắn muốn TẠO VÁN CHƠI MỚI? (Toàn bộ số sẽ bị xóa)")) return;
+            }
+            
+            isL = false; daBoc = [];
+            document.getElementById('btnCall').disabled = false;
+            
+            let mainNum = document.getElementById('main-num');
+            mainNum.innerText = "--";
+            mainNum.classList.remove('win-number');
+
+            document.getElementById('prev-num').innerText = "--";
+            document.getElementById('draw-count').innerText = "Đã bốc: 0 số";
+            
+            closeWinScreen();
+            
+            document.querySelectorAll('input').forEach(i => {
+                i.value = ""; i.style.background="white"; i.style.borderColor = "#ddd"; i.style.color = "var(--dark)";
+            });
+            document.querySelectorAll('[id^="st-"]').forEach(s => s.innerHTML = "");
+            drawSummary(); taoVe();
+        }
+
+        function startFireworks() {
+            const cv = document.getElementById('canvas'), ctx = cv.getContext('2d');
+            if (isFiring) return; 
+            isFiring = true;
+            cv.style.display = 'block';
+            cv.width = window.innerWidth; cv.height = window.innerHeight;
+            let pts = [];
+            function anim() {
+                if (cv.style.display === 'none') { isFiring = false; return; }
+                ctx.fillStyle = 'rgba(0,0,0,0.15)'; ctx.fillRect(0,0,cv.width, cv.height);
+                if (Math.random() < 0.2) {
+                    let x = Math.random()*cv.width, y = Math.random()*cv.height, c = `hsl(${Math.random()*360},100%,50%)`;
+                    for(let i=0; i<40; i++) pts.push({x,y,dx:Math.random()*6-3,dy:Math.random()*6-3,c,l:70});
+                }
+                pts.forEach((p,i) => {
+                    p.x+=p.dx; p.y+=p.dy; p.l--;
+                    ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,2,0,Math.PI*2); ctx.fill();
+                    if(p.l<=0) pts.splice(i,1);
+                });
+                requestAnimationFrame(anim);
+            }
+            anim();
+        }
+
+        function stopFireworks() {
+            document.getElementById('canvas').style.display = 'none';
+            isFiring = false;
+        }
+    </script>
+</body>
+</html>
