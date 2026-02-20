@@ -15,14 +15,15 @@
         .left-panel, .right-panel { flex: 1; background: var(--white); border: 4px solid var(--gold); padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
         h2 { color: var(--red); text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 18px; }
 
-        /* MÀN HÌNH SỐ 50/50 */
-        .display-section { display: flex; gap: 15px; margin: 15px 0; height: 140px; }
-        .prev-container { flex: 1; background: #f5f5f5; border: 4px solid #ddd; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.05); }
-        .prev-label { font-size: 14px; color: #888; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-        .prev-box { font-size: 60px; color: #555; font-weight: bold; line-height: 1; }
+        /* MÀN HÌNH SỐ TỶ LỆ 1/4 - 1/4 - 1/2 */
+        .display-section { display: flex; gap: 10px; margin: 15px 0; height: 120px; }
         
-        .main-container { flex: 1; background: var(--dark); border: 4px solid var(--gold); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(241,196,15,0.3); transition: 0.3s; }
-        .main-box { font-size: 80px; color: var(--gold); font-weight: bold; line-height: 1; text-shadow: 0 0 15px var(--gold); }
+        .prev-container { flex: 1; background: #f5f5f5; border: 3px solid #ddd; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 10px rgba(0,0,0,0.05); }
+        .prev-label { font-size: 11px; color: #888; font-weight: bold; text-transform: uppercase; margin-bottom: 2px; }
+        .prev-box { font-size: 45px; color: #555; font-weight: bold; line-height: 1; }
+        
+        .main-container { flex: 2; background: var(--dark); border: 4px solid var(--gold); border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(241,196,15,0.3); transition: 0.3s; }
+        .main-box { font-size: 75px; color: var(--gold); font-weight: bold; line-height: 1; text-shadow: 0 0 15px var(--gold); }
         .win-number { background: var(--green) !important; color: var(--white) !important; border-color: #a5d6a7 !important; text-shadow: 0 0 20px #00ff00 !important; }
 
         .draw-counter { text-align: center; margin-bottom: 10px; font-weight: bold; color: var(--red); font-size: 16px; background: #ffebee; padding: 8px; border-radius: 10px; border: 1px dashed var(--red); }
@@ -40,7 +41,7 @@
 
         /* XÁC MINH CẢM ỨNG */
         .right-panel { gap: 12px; }
-        .verify-card { background: #f9f9f9; border-radius: 15px; padding: 12px; border-left: 8px solid; border: 1px solid #eee; }
+        .verify-card { background: #f9f9f9; border-radius: 15px; padding: 12px; border-left: 8px solid; border-right: 1px solid #eee; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: bold; }
         .btn-bao-kinh { background: var(--red); color: var(--gold); border: 1px solid var(--gold); border-radius: 6px; padding: 6px 15px; font-weight: bold; font-size: 12px; cursor: pointer; box-shadow: 0 2px #b71c1c; }
         
@@ -91,8 +92,12 @@
 
             <div class="display-section">
                 <div class="prev-container">
+                    <div class="prev-label">Trước Nữa</div>
+                    <div id="prev-num-2" class="prev-box">--</div>
+                </div>
+                <div class="prev-container">
                     <div class="prev-label">Số Trước</div>
-                    <div id="prev-num" class="prev-box">--</div>
+                    <div id="prev-num-1" class="prev-box">--</div>
                 </div>
                 <div class="main-container">
                     <div id="main-num" class="main-box">--</div>
@@ -172,7 +177,6 @@
         let synth = window.speechSynthesis;
         let isAudioUnlocked = false;
 
-        // BIẾN CHO CHẾ ĐỘ TỰ ĐỘNG & NHẬP SỐ
         let autoDrawInterval = null;
         let activeVerifyInput = null;
 
@@ -210,7 +214,7 @@
             synth.speak(u);
         }
 
-        // 2. KHỞI TẠO BẢNG TỔNG (6 CỘT CHUẨN)
+        // 2. BẢNG TỔNG & CẢM ỨNG
         function drawSummary() {
             const grid = document.getElementById('summary-grid');
             grid.innerHTML = '';
@@ -220,25 +224,22 @@
                 c.id = 's-'+i; 
                 c.innerText = i;
                 
-                // SỰ KIỆN: Khi chạm vào ô trên bảng tổng
                 c.onclick = () => {
-                    if(!activeVerifyInput) return; // Nếu chưa ấn Báo Kinh thì ko làm gì
+                    if(!activeVerifyInput) return; 
                     
                     if(!daBoc.includes(i)) {
                         alert("Số " + i + " chưa được bốc, không thể chọn gian lận!");
                         return;
                     }
                     
-                    // Điền số vào ô đang sáng
                     activeVerifyInput.value = i;
                     activeVerifyInput.classList.remove('active-input');
                     
-                    // Tự động nhảy sang ô trống tiếp theo của Người đó
                     let parent = activeVerifyInput.parentElement;
                     let inputs = Array.from(parent.querySelectorAll('input'));
                     let currentIndex = inputs.indexOf(activeVerifyInput);
                     
-                    activeVerifyInput = null; // Xóa active
+                    activeVerifyInput = null; 
                     
                     for(let j = currentIndex + 1; j < inputs.length; j++) {
                         if(!inputs[j].value) {
@@ -252,10 +253,9 @@
             }
         }
 
-        // CÀI ĐẶT SỰ KIỆN CHỌN Ô CHO CÁC INPUT
         function setupInputListeners() {
             document.querySelectorAll('.check-inputs input').forEach(inp => {
-                if(!inp.classList.contains('in-3')) { // Bỏ qua ô của Nhà Cái
+                if(!inp.classList.contains('in-3')) { 
                     inp.addEventListener('click', function() {
                         document.querySelectorAll('.check-inputs input').forEach(i => i.classList.remove('active-input'));
                         this.classList.add('active-input');
@@ -272,7 +272,7 @@
             resetGame(true);
         }
 
-        // 3. CHẾ ĐỘ AUTO-DRAW
+        // 3. AUTO-DRAW
         function setAutoMode(seconds) {
             clearInterval(autoDrawInterval);
             document.querySelectorAll('.btn-auto').forEach(btn => btn.classList.remove('active'));
@@ -324,8 +324,17 @@
         function bocSo() {
             if (isL || daBoc.length >= 90 || dIdx >= 90) return; 
             
-            let cur = document.getElementById('main-num').innerText;
-            if (cur !== "--") document.getElementById('prev-num').innerText = cur;
+            // --- THUẬT TOÁN ĐẨY 2 SỐ TRƯỚC ---
+            let curMain = document.getElementById('main-num').innerText;
+            let curPrev1 = document.getElementById('prev-num-1').innerText;
+
+            if (curPrev1 !== "--" && curMain !== "--") {
+                document.getElementById('prev-num-2').innerText = curPrev1;
+            }
+            if (curMain !== "--") {
+                document.getElementById('prev-num-1').innerText = curMain;
+            }
+            // ---------------------------------
 
             let n = dDeck[dIdx++]; 
             daBoc.push(n);
@@ -343,26 +352,23 @@
             chkAutoLock();
         }
 
-        // 5. BÁO KINH & CHỌN SỐ TRÊN BẢNG
+        // 5. BÁO KINH
         function baoKinh(uId) {
             if (daBoc.length === 0) { alert("Chưa bốc số nào!"); return; }
-            stopAutoMode(); // Dừng Auto nếu có
+            stopAutoMode(); 
             isL = true;
             document.getElementById('btnCall').disabled = true;
             
             let lastNumber = daBoc[daBoc.length - 1];
             let inputs = document.querySelectorAll('.in-' + uId);
             
-            // Xóa sạch ô cũ
             inputs.forEach(i => { i.value = ""; i.classList.remove('active-input'); });
             
-            // Điền số Kinh (cuối) vào ô 1
             inputs[0].value = lastNumber;
             inputs[0].style.borderColor = "var(--red)"; 
             inputs[0].style.background = "#fffde7"; 
             inputs[0].style.color = "var(--red)"; 
             
-            // Kích hoạt nhấp nháy ở ô thứ 2
             inputs[1].classList.add('active-input');
             activeVerifyInput = inputs[1];
         }
@@ -487,7 +493,11 @@
             
             let mainNum = document.getElementById('main-num');
             mainNum.innerText = "--"; mainNum.classList.remove('win-number');
-            document.getElementById('prev-num').innerText = "--";
+            
+            // XÓA SẠCH SỐ TRƯỚC
+            document.getElementById('prev-num-1').innerText = "--";
+            document.getElementById('prev-num-2').innerText = "--";
+            
             document.getElementById('draw-count').innerText = "Đã bốc: 0 số";
             
             closeWinScreen();
