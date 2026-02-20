@@ -6,65 +6,65 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Lô Tô Tết">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#7d0000">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧧</text></svg>">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧧</text></svg>">
-    <title>LÔ TÔ TẾT 2026</title>
+    <title>LÔ TÔ TẾT 2026 - PRO VERSION</title>
     <style>
         :root { --red: #d32f2f; --gold: #f1c40f; --dark: #1a1a1a; --white: #ffffff; --green: #2e7d32; --bg: #7d0000; }
         body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); margin: 0; padding: env(safe-area-inset-top) 10px 10px 10px; color: var(--dark); overflow-x: hidden; }
         
         .main-layout { display: flex; flex-direction: row; gap: 20px; max-width: 1200px; margin: auto; align-items: stretch; }
-
         .left-panel, .right-panel { flex: 1; background: var(--white); border: 4px solid var(--gold); padding: 20px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; flex-direction: column; }
         h2 { color: var(--red); text-align: center; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; border-bottom: 2px solid var(--gold); padding-bottom: 10px; font-size: 18px; }
 
-        /* ĐIỀU KHIỂN */
-        .display-section { display: flex; align-items: flex-start; justify-content: center; gap: 15px; margin: 20px 0 10px 0; }
-        .prev-container { text-align: center; margin-top: 15px; }
-        .prev-box { width: 70px; height: 70px; line-height: 70px; background: #fff9c4; color: #999; border: 2px solid #ddd; border-radius: 15px; font-size: 30px; font-weight: bold; }
-
-        .main-container { flex: 1; }
-        .main-box { width: 100%; height: 120px; line-height: 120px; background: var(--dark); color: var(--gold); border: 4px solid var(--gold); border-radius: 20px; font-size: 85px; font-weight: bold; text-align: center; text-shadow: 0 0 15px var(--gold); box-sizing: border-box; transition: 0.3s; }
+        /* MÀN HÌNH SỐ 50/50 */
+        .display-section { display: flex; gap: 15px; margin: 15px 0; height: 140px; }
+        .prev-container { flex: 1; background: #f5f5f5; border: 4px solid #ddd; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: inset 0 0 15px rgba(0,0,0,0.05); }
+        .prev-label { font-size: 14px; color: #888; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+        .prev-box { font-size: 60px; color: #555; font-weight: bold; line-height: 1; }
+        
+        .main-container { flex: 1; background: var(--dark); border: 4px solid var(--gold); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(241,196,15,0.3); transition: 0.3s; }
+        .main-box { font-size: 80px; color: var(--gold); font-weight: bold; line-height: 1; text-shadow: 0 0 15px var(--gold); }
         .win-number { background: var(--green) !important; color: var(--white) !important; border-color: #a5d6a7 !important; text-shadow: 0 0 20px #00ff00 !important; }
-        .draw-counter { text-align: center; margin-top: 8px; font-weight: bold; color: var(--red); font-size: 16px; background: #ffebee; padding: 5px; border-radius: 10px; border: 1px dashed var(--red); }
 
-        .btn-call { width: 100%; padding: 18px; background: linear-gradient(to bottom, #ff5252, #d32f2f); color: white; border: none; border-radius: 15px; font-size: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 6px #8e0000; transition: 0.2s; margin-top: 10px; }
+        .draw-counter { text-align: center; margin-bottom: 10px; font-weight: bold; color: var(--red); font-size: 16px; background: #ffebee; padding: 8px; border-radius: 10px; border: 1px dashed var(--red); }
+
+        /* CỤM NÚT ĐIỀU KHIỂN & AUTO */
+        .btn-call { width: 100%; padding: 18px; background: linear-gradient(to bottom, #ff5252, #d32f2f); color: white; border: none; border-radius: 15px; font-size: 22px; font-weight: bold; cursor: pointer; box-shadow: 0 6px #8e0000; transition: 0.2s; }
         .btn-call:active { box-shadow: 0 0 #8e0000; transform: translateY(4px); }
         .btn-call:disabled { background: #999 !important; box-shadow: none; cursor: not-allowed; color: #eee !important; }
-        .btn-new-game { width: 100%; padding: 14px; background: #424242; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 12px; box-shadow: 0 4px #212121; transition: 0.2s; }
-        .btn-new-game:active { box-shadow: 0 0 #212121; transform: translateY(4px); }
+        
+        .auto-controls { display: flex; gap: 8px; margin-top: 15px; }
+        .btn-auto { flex: 1; padding: 12px 0; border: 2px solid #ddd; background: #f9f9f9; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; color: #555; transition: 0.2s; }
+        .btn-auto.active { background: var(--green); color: white; border-color: var(--green); box-shadow: 0 4px 10px rgba(46,125,50,0.4); }
 
-        /* BẢNG TỔNG (BÊN PHẢI) */
-        .summary-title { text-align: center; font-size: 15px; color: var(--red); margin: 20px 0 10px 0; text-transform: uppercase; font-weight: bold; border-top: 2px dashed #ddd; padding-top: 15px; }
-        .summary-container { flex-grow: 1; }
-        .sum-row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; background: #fffde7; padding: 8px; border-radius: 10px; border: 1px solid var(--gold); margin-bottom: 15px; position: relative; }
-        .sum-row::before { content: attr(data-label); position: absolute; top: -10px; left: 10px; background: var(--gold); font-size: 9px; font-weight: bold; padding: 2px 8px; border-radius: 5px; border: 1px solid #b8860b; color: var(--dark); }
-        .sum-cell { background: white; font-size: 11px; height: 26px; line-height: 26px; text-align: center; border-radius: 4px; color: #ddd; border: 1px solid #eee; }
-        .sum-cell.active { background: var(--red); color: var(--gold); font-weight: bold; border-color: var(--gold); }
+        .btn-new-game { width: 100%; padding: 14px; background: #424242; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; box-shadow: 0 4px #212121; }
 
-        /* XÁC MINH */
+        /* XÁC MINH CẢM ỨNG */
         .right-panel { gap: 12px; }
-        .verify-card { background: #f9f9f9; border-radius: 15px; padding: 12px; border-left: 8px solid; border-right: 1px solid #eee; border-top: 1px solid #eee; border-bottom: 1px solid #eee; }
+        .verify-card { background: #f9f9f9; border-radius: 15px; padding: 12px; border-left: 8px solid; border: 1px solid #eee; }
         .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 13px; font-weight: bold; }
-        .btn-bao-kinh { background: var(--red); color: var(--gold); border: 1px solid var(--gold); border-radius: 6px; padding: 5px 12px; font-weight: bold; font-size: 11px; cursor: pointer; transition: 0.2s; box-shadow: 0 2px #b71c1c; }
-        .btn-bao-kinh:active { transform: translateY(2px); box-shadow: none; }
-
+        .btn-bao-kinh { background: var(--red); color: var(--gold); border: 1px solid var(--gold); border-radius: 6px; padding: 6px 15px; font-weight: bold; font-size: 12px; cursor: pointer; box-shadow: 0 2px #b71c1c; }
+        
         .check-inputs { display: flex; justify-content: space-between; gap: 4px; }
-        .check-inputs input { width: 18%; padding: 10px; text-align: center; border-radius: 10px; border: 2px solid #ddd; font-weight: bold; font-size: 18px; transition: 0.3s; color: var(--dark); }
-        .check-inputs input:focus { border-color: var(--gold); background: #fffde7; outline: none; }
-        .btn-verify { width: 100%; margin-top: 8px; padding: 10px; border-radius: 10px; border: none; color: white; font-weight: bold; cursor: pointer; }
+        .check-inputs input { width: 18%; padding: 12px 0; text-align: center; border-radius: 10px; border: 2px solid #ccc; font-weight: bold; font-size: 20px; color: var(--dark); background: white; cursor: pointer; transition: 0.2s; outline: none; }
+        .check-inputs input.active-input { border: 3px solid var(--red) !important; background: #fff0f0 !important; box-shadow: 0 0 12px rgba(211,47,47,0.4); transform: scale(1.05); }
+        .btn-verify { width: 100%; margin-top: 10px; padding: 12px; border-radius: 10px; border: none; color: white; font-weight: bold; font-size: 15px; cursor: pointer; }
 
-        /* VÉ NHÀ CÁI (BÊN TRÁI) */
-        .ticket-box { background: #fff; border: 3px solid #1565c0; border-radius: 15px; padding: 15px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; }
-        .ticket-box h3 { background: #1565c0; color: white !important; margin: -15px -15px 15px -15px; padding: 10px; border-radius: 10px 10px 0 0; text-transform: uppercase; font-size: 14px; text-align: center; letter-spacing: 1px; }
+        /* VÉ NHÀ CÁI */
+        .ticket-box { background: #fff; border: 3px solid #1565c0; border-radius: 15px; padding: 15px; margin-top: 15px; }
+        .ticket-box h3 { background: #1565c0; color: white; margin: -15px -15px 15px -15px; padding: 10px; border-radius: 10px 10px 0 0; text-transform: uppercase; font-size: 14px; text-align: center; }
         .ticket-cluster { margin-bottom: 10px; border-bottom: 2px dashed #90caf9; padding-bottom: 8px; }
         .ticket-cluster:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
         .ticket-table { width: 100%; border-collapse: separate; border-spacing: 3px; }
-        .ticket-table td { width: 11%; height: 35px; text-align: center; border-radius: 6px; font-weight: bold; font-size: 15px; border: 1px solid #90caf9; background: #e3f2fd; color: #0d47a1; transition: 0.2s; }
+        .ticket-table td { width: 11%; height: 35px; text-align: center; border-radius: 6px; font-weight: bold; font-size: 15px; border: 1px solid #90caf9; background: #e3f2fd; color: #0d47a1; }
         .empty { background: transparent !important; border: 1px dashed #e0e0e0 !important; }
-        .revealed { background: var(--gold) !important; color: var(--red) !important; border-color: var(--gold) !important; box-shadow: 0 0 10px rgba(241, 196, 15, 0.6); transform: scale(1.05); }
+        .revealed { background: var(--gold) !important; color: var(--red) !important; border-color: var(--gold) !important; transform: scale(1.05); }
+
+        /* BẢNG TỔNG 6 CỘT SIZE LỚN */
+        .summary-title { text-align: center; font-size: 16px; color: var(--red); margin: 15px 0 10px 0; text-transform: uppercase; font-weight: bold; border-top: 2px dashed #ddd; padding-top: 15px; }
+        #summary-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; background: #fffde7; padding: 15px; border-radius: 15px; border: 2px solid var(--gold); flex-grow: 1; align-content: start; }
+        .sum-cell { background: white; font-size: 18px; font-weight: bold; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #bbb; border: 1px solid #ddd; cursor: pointer; transition: 0.2s; }
+        .sum-cell.active { background: var(--red); color: var(--gold); border-color: var(--gold); box-shadow: 0 3px 6px rgba(0,0,0,0.2); }
+        .sum-cell.active:active { transform: scale(0.9); }
 
         #start-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; display: none; background: rgba(0,0,0,0.7); }
@@ -86,18 +86,28 @@
     <div class="main-layout">
         <div class="left-panel">
             <h2>📢 TRẠM ĐIỀU KHIỂN</h2>
+            
+            <div class="draw-counter" id="draw-count">Đã bốc: 0 số</div>
+
             <div class="display-section">
                 <div class="prev-container">
-                    <div style="font-size:10px; font-weight:bold; color: #999;">TRƯỚC</div>
+                    <div class="prev-label">Số Trước</div>
                     <div id="prev-num" class="prev-box">--</div>
                 </div>
                 <div class="main-container">
                     <div id="main-num" class="main-box">--</div>
-                    <div id="draw-count" class="draw-counter">Đã bốc: 0 số</div>
                 </div>
             </div>
             
             <button id="btnCall" class="btn-call" onclick="bocSo()">BỐC SỐ MAY MẮN</button>
+            
+            <div class="auto-controls">
+                <button class="btn-auto active" id="btn-auto-0" onclick="setAutoMode(0)">Bấm Tay</button>
+                <button class="btn-auto" id="btn-auto-7" onclick="setAutoMode(7)">Tự động 7s</button>
+                <button class="btn-auto" id="btn-auto-12" onclick="setAutoMode(12)">Tự động 12s</button>
+                <button class="btn-auto" id="btn-auto-18" onclick="setAutoMode(18)">Tự động 18s</button>
+            </div>
+
             <button class="btn-new-game" onclick="resetGame(false)">🔄 TẠO VÁN CHƠI MỚI</button>
 
             <div class="verify-card" style="border-left-color: var(--green); background: #e8f5e9; margin-top: 20px;">
@@ -106,9 +116,9 @@
                     <div id="st-3"></div>
                 </div>
                 <div class="check-inputs">
-                    <input type="number" class="in-3" readonly> <input type="number" class="in-3" readonly>
-                    <input type="number" class="in-3" readonly> <input type="number" class="in-3" readonly>
-                    <input type="number" class="in-3" readonly>
+                    <input type="text" class="in-3" readonly> <input type="text" class="in-3" readonly>
+                    <input type="text" class="in-3" readonly> <input type="text" class="in-3" readonly>
+                    <input type="text" class="in-3" readonly>
                 </div>
                 <button class="btn-verify" style="background:var(--green)" onclick="verifyUser(3)">XÁC MINH CHO NHÀ CÁI</button>
             </div>
@@ -129,9 +139,9 @@
                     <div id="st-1"></div>
                 </div>
                 <div class="check-inputs">
-                    <input type="number" class="in-1"> <input type="number" class="in-1">
-                    <input type="number" class="in-1"> <input type="number" class="in-1">
-                    <input type="number" class="in-1">
+                    <input type="text" class="in-1" readonly> <input type="text" class="in-1" readonly>
+                    <input type="text" class="in-1" readonly> <input type="text" class="in-1" readonly>
+                    <input type="text" class="in-1" readonly>
                 </div>
                 <button class="btn-verify" style="background:#ff5722" onclick="verifyUser(1)">XÁC MINH NGƯỜI 1</button>
             </div>
@@ -143,19 +153,15 @@
                     <div id="st-2"></div>
                 </div>
                 <div class="check-inputs">
-                    <input type="number" class="in-2"> <input type="number" class="in-2">
-                    <input type="number" class="in-2"> <input type="number" class="in-2">
-                    <input type="number" class="in-2">
+                    <input type="text" class="in-2" readonly> <input type="text" class="in-2" readonly>
+                    <input type="text" class="in-2" readonly> <input type="text" class="in-2" readonly>
+                    <input type="text" class="in-2" readonly>
                 </div>
                 <button class="btn-verify" style="background:#2196f3" onclick="verifyUser(2)">XÁC MINH NGƯỜI 2</button>
             </div>
 
-            <div class="summary-title">BẢNG TỔNG CÁC SỐ ĐÃ BỐC</div>
-            <div class="summary-container">
-                <div class="sum-row" data-label="DÒNG 1: SỐ 01 - 30" id="row-1"></div>
-                <div class="sum-row" data-label="DÒNG 2: SỐ 31 - 60" id="row-2"></div>
-                <div class="sum-row" data-label="DÒNG 3: SỐ 61 - 90" id="row-3"></div>
-            </div>
+            <div class="summary-title">BẢNG SỐ ĐÃ RA (CHẠM ĐỂ CHỌN SỐ KINH)</div>
+            <div id="summary-grid"></div>
         </div>
     </div>
 
@@ -163,12 +169,14 @@
         let daBoc = [], veData = [], isL = false;
         let fireworksTimeout = null, isFiring = false;
         let dDeck = [], dIdx = 0; 
-        
-        // HỆ THỐNG ÂM THANH OFFLINE (KHÔNG BAO GIỜ BỊ LỖI MẠNG)
         let synth = window.speechSynthesis;
         let isAudioUnlocked = false;
 
-        // BỘ PHIÊN DỊCH: Ép máy phải đọc tiếng Việt, không bao giờ đọc Eleven
+        // BIẾN CHO CHẾ ĐỘ TỰ ĐỘNG & NHẬP SỐ
+        let autoDrawInterval = null;
+        let activeVerifyInput = null;
+
+        // 1. ÂM THANH OFFLINE
         function getVietnameseText(n) {
             const units = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
             if (n < 10) return "Số " + units[n];
@@ -184,57 +192,104 @@
             return "Số " + strChuc + (strDonVi ? " " + strDonVi : "");
         }
 
-        // HÀM MỞ KHÓA ÂM THANH CHO IPHONE/PC (BẮT BUỘC)
         function unlockAudio() {
             if (!isAudioUnlocked) {
-                let u = new SpeechSynthesisUtterance(""); 
-                u.volume = 0; // Đọc im lặng để xin quyền hệ thống
-                synth.speak(u);
+                let u = new SpeechSynthesisUtterance(""); u.volume = 0; synth.speak(u);
                 isAudioUnlocked = true;
             }
         }
 
-        // HÀM ĐỌC SỐ
         function playVoice(text) {
             if (!synth) return;
-            synth.cancel(); // Xóa hàng đợi cũ (Fix lỗi kẹt giọng trên iPhone)
-            
+            synth.cancel();
             let u = new SpeechSynthesisUtterance(text);
-            u.lang = 'vi-VN'; // Ép ngôn ngữ tiếng Việt
-            u.rate = 0.95;    // Tốc độ đọc
-            
-            // Tìm giọng tiếng Việt chuẩn nếu máy có
+            u.lang = 'vi-VN'; u.rate = 0.95;
             let voices = synth.getVoices();
             let viVoice = voices.find(v => v.lang.includes('vi') || v.lang.includes('VI'));
-            if (viVoice) { u.voice = viVoice; }
-            
+            if (viVoice) u.voice = viVoice;
             synth.speak(u);
         }
 
-        // Tải trước giọng đọc để tránh bị delay ở số đầu tiên
-        if (speechSynthesis.onvoiceschanged !== undefined) {
-            speechSynthesis.onvoiceschanged = () => { synth.getVoices(); };
+        // 2. KHỞI TẠO BẢNG TỔNG (6 CỘT CHUẨN)
+        function drawSummary() {
+            const grid = document.getElementById('summary-grid');
+            grid.innerHTML = '';
+            for(let i=1; i<=90; i++){
+                let c = document.createElement('div');
+                c.className = 'sum-cell'; 
+                c.id = 's-'+i; 
+                c.innerText = i;
+                
+                // SỰ KIỆN: Khi chạm vào ô trên bảng tổng
+                c.onclick = () => {
+                    if(!activeVerifyInput) return; // Nếu chưa ấn Báo Kinh thì ko làm gì
+                    
+                    if(!daBoc.includes(i)) {
+                        alert("Số " + i + " chưa được bốc, không thể chọn gian lận!");
+                        return;
+                    }
+                    
+                    // Điền số vào ô đang sáng
+                    activeVerifyInput.value = i;
+                    activeVerifyInput.classList.remove('active-input');
+                    
+                    // Tự động nhảy sang ô trống tiếp theo của Người đó
+                    let parent = activeVerifyInput.parentElement;
+                    let inputs = Array.from(parent.querySelectorAll('input'));
+                    let currentIndex = inputs.indexOf(activeVerifyInput);
+                    
+                    activeVerifyInput = null; // Xóa active
+                    
+                    for(let j = currentIndex + 1; j < inputs.length; j++) {
+                        if(!inputs[j].value) {
+                            inputs[j].classList.add('active-input');
+                            activeVerifyInput = inputs[j];
+                            break;
+                        }
+                    }
+                };
+                grid.appendChild(c);
+            }
+        }
+
+        // CÀI ĐẶT SỰ KIỆN CHỌN Ô CHO CÁC INPUT
+        function setupInputListeners() {
+            document.querySelectorAll('.check-inputs input').forEach(inp => {
+                if(!inp.classList.contains('in-3')) { // Bỏ qua ô của Nhà Cái
+                    inp.addEventListener('click', function() {
+                        document.querySelectorAll('.check-inputs input').forEach(i => i.classList.remove('active-input'));
+                        this.classList.add('active-input');
+                        activeVerifyInput = this;
+                    });
+                }
+            });
         }
 
         function initGame() {
             document.getElementById('start-overlay').style.display = 'none';
-            unlockAudio(); // Mở khóa âm thanh từ cú click đầu tiên
+            unlockAudio();
+            setupInputListeners();
             resetGame(true);
         }
 
-        function drawSummary() {
-            for(let r=1; r<=3; r++){
-                let row = document.getElementById('row-'+r); row.innerHTML = '';
-                let start = (r-1)*30 + 1;
-                for(let i=start; i<start+30; i++){
-                    let c = document.createElement('div');
-                    c.className = 'sum-cell'; c.id = 's-'+i; c.innerText = i;
-                    row.appendChild(c);
-                }
+        // 3. CHẾ ĐỘ AUTO-DRAW
+        function setAutoMode(seconds) {
+            clearInterval(autoDrawInterval);
+            document.querySelectorAll('.btn-auto').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-auto-' + seconds).classList.add('active');
+            
+            if (seconds > 0 && !isL && daBoc.length < 90) {
+                autoDrawInterval = setInterval(() => { bocSo(); }, seconds * 1000);
             }
         }
 
-        // THUẬT TOÁN ẨN: ÉP TỈ LỆ 40% THẮNG (TỪ 30-40)
+        function stopAutoMode() {
+            clearInterval(autoDrawInterval);
+            document.querySelectorAll('.btn-auto').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-auto-0').classList.add('active');
+        }
+
+        // 4. THUẬT TOÁN NHÀ CÁI ÉP TỈ LỆ 40%
         function prepareD() {
             dDeck = []; dIdx = 0;
             let arr = Array.from({length: 90}, (_, i) => i + 1);
@@ -242,14 +297,12 @@
                 let j = Math.floor(Math.random() * (i + 1));
                 [arr[i], arr[j]] = [arr[j], arr[i]];
             }
-
             if (Math.random() < 0.40 && veData.length > 0) {
                 let vR = [];
                 for (let r = 0; r < 9; r++) {
                     let row = veData[r].filter(n => n !== null);
                     if (row.length === 5) vR.push(row);
                 }
-                
                 if (vR.length > 0) {
                     let tR = [...vR[Math.floor(Math.random() * vR.length)]];
                     arr = arr.filter(n => !tR.includes(n));
@@ -280,31 +333,38 @@
             document.getElementById('main-num').innerText = n;
             document.getElementById('draw-count').innerText = `Đã bốc: ${daBoc.length} số`;
             
-            // Dịch số sang chữ và phát âm (Chắc chắn hoạt động!)
-            let textToRead = getVietnameseText(n);
-            playVoice(textToRead);
+            playVoice(getVietnameseText(n));
             
-            document.getElementById('s-'+n).classList.add('active');
-            let cell = document.getElementById('v-'+n);
-            if (cell) cell.classList.add('revealed');
+            let cell = document.getElementById('s-'+n);
+            if (cell) cell.classList.add('active');
+            let tCell = document.getElementById('v-'+n);
+            if (tCell) tCell.classList.add('revealed');
             
             chkAutoLock();
         }
 
+        // 5. BÁO KINH & CHỌN SỐ TRÊN BẢNG
         function baoKinh(uId) {
             if (daBoc.length === 0) { alert("Chưa bốc số nào!"); return; }
-            
+            stopAutoMode(); // Dừng Auto nếu có
             isL = true;
             document.getElementById('btnCall').disabled = true;
-            let lastNumber = daBoc[daBoc.length - 1];
             
+            let lastNumber = daBoc[daBoc.length - 1];
             let inputs = document.querySelectorAll('.in-' + uId);
+            
+            // Xóa sạch ô cũ
+            inputs.forEach(i => { i.value = ""; i.classList.remove('active-input'); });
+            
+            // Điền số Kinh (cuối) vào ô 1
             inputs[0].value = lastNumber;
             inputs[0].style.borderColor = "var(--red)"; 
             inputs[0].style.background = "#fffde7"; 
             inputs[0].style.color = "var(--red)"; 
             
-            inputs[1].focus();
+            // Kích hoạt nhấp nháy ở ô thứ 2
+            inputs[1].classList.add('active-input');
+            activeVerifyInput = inputs[1];
         }
 
         function chkAutoLock() {
@@ -315,8 +375,8 @@
                         winNumbers.push(veData[r][c]);
                     }
                 }
-                
                 if (winNumbers.length === 5) {
+                    stopAutoMode();
                     isL = true;
                     document.getElementById('btnCall').disabled = true;
                     document.getElementById('main-num').classList.add('win-number');
@@ -343,8 +403,11 @@
         }
 
         function triggerWin(message) {
+            stopAutoMode();
             isL = true;
             document.getElementById('btnCall').disabled = true;
+            document.querySelectorAll('.check-inputs input').forEach(i => i.classList.remove('active-input'));
+            activeVerifyInput = null;
             
             let winTxt = document.getElementById('win-txt');
             winTxt.innerHTML = message + `
@@ -372,7 +435,7 @@
                 if(v) { total++; if(daBoc.includes(v)) { i.style.background="#c8e6c9"; ct++; } else { i.style.background="#ffcdd2"; } }
             });
             let st = document.getElementById('st-'+uId);
-            if(total < 5) return alert("Vui lòng nhập đủ 5 số trên hàng ngang!");
+            if(total < 5) return alert("Bạn chưa bấm đủ 5 số trên bảng tổng!");
             
             if(ct === 5) { 
                 st.innerHTML = "✅ HỢP LỆ!"; st.style.color = "var(--green)"; 
@@ -394,7 +457,6 @@
                 let cs = [0,1,2,3,4,5,6,7,8].sort(() => Math.random() - 0.5).slice(0, 5);
                 cs.forEach(c => { veData[r][c] = ps[c].pop(); });
             }
-
             for (let cluster = 0; cluster < 3; cluster++) {
                 let div = document.createElement('div');
                 div.className = 'ticket-cluster';
@@ -418,26 +480,24 @@
                 if(!confirm("Bạn có chắc chắn muốn TẠO VÁN CHƠI MỚI? (Toàn bộ số sẽ bị xóa)")) return;
             }
             
+            stopAutoMode();
             isL = false; daBoc = [];
+            activeVerifyInput = null;
             document.getElementById('btnCall').disabled = false;
             
             let mainNum = document.getElementById('main-num');
-            mainNum.innerText = "--";
-            mainNum.classList.remove('win-number');
-
+            mainNum.innerText = "--"; mainNum.classList.remove('win-number');
             document.getElementById('prev-num').innerText = "--";
             document.getElementById('draw-count').innerText = "Đã bốc: 0 số";
             
             closeWinScreen();
             
-            document.querySelectorAll('input').forEach(i => {
-                i.value = ""; i.style.background="white"; i.style.borderColor = "#ddd"; i.style.color = "var(--dark)";
+            document.querySelectorAll('.check-inputs input').forEach(i => {
+                i.value = ""; i.style.background="white"; i.style.borderColor = "#ccc"; i.style.color = "var(--dark)"; i.classList.remove('active-input');
             });
             document.querySelectorAll('[id^="st-"]').forEach(s => s.innerHTML = "");
             
-            drawSummary(); 
-            taoVe();
-            prepareD(); 
+            drawSummary(); taoVe(); prepareD(); 
         }
 
         function startFireworks() {
@@ -464,10 +524,7 @@
             anim();
         }
 
-        function stopFireworks() {
-            document.getElementById('canvas').style.display = 'none';
-            isFiring = false;
-        }
+        function stopFireworks() { document.getElementById('canvas').style.display = 'none'; isFiring = false; }
     </script>
 </body>
 </html>
